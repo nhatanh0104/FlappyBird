@@ -21,6 +21,8 @@ public:
 
 	void render(int x, int y, SDL_Renderer* gRenderer, SDL_Rect* clip = NULL);
 
+	void renderToTargetRect(SDL_Renderer* gRenderer, SDL_Rect* destination, SDL_Rect* clip = NULL);
+
 	int getWidth();
 	int getHeight();
 

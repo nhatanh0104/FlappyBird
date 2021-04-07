@@ -32,7 +32,7 @@ bool LTexture::loadFromFile(std::string path, SDL_Renderer* gRenderer)
 	}
 	else
 	{
-		SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));
+		/*SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));*/
 
 		newTexture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 		if (newTexture == NULL)
@@ -79,6 +79,16 @@ void LTexture::render(int x, int y, SDL_Renderer* gRenderer, SDL_Rect* clip)
 	//Render to screen
 	cout << SDL_GetError();
 	SDL_RenderCopy(gRenderer, mTexture, clip, &renderQuad);
+}
+
+void LTexture::renderToTargetRect(SDL_Renderer* gRenderer, SDL_Rect* destination, SDL_Rect* clip)
+{	
+	if (clip != NULL)
+	{
+		destination->w = clip->w;
+		destination->h = clip->h;
+	}
+	SDL_RenderCopy(gRenderer, mTexture, clip, destination);
 }
 
 int LTexture::getWidth()
