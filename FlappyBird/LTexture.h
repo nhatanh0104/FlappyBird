@@ -1,4 +1,3 @@
-#pragma once
 #ifndef LTEXTURE__H_
 #define LTEXTURE__H_
 

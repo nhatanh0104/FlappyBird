@@ -17,35 +17,45 @@ const int SCREEN_WIDTH = 450;
 const int SCREEN_HEIGHT = 800;
 const int BIRD_ANIMATION_FRAMES = 3;
 const string WINDOW_TITLE = "Flappy Bird";
-const int PIPE_GAP = 100;
+const int PIPE_GAP = 150;
+const int BIRD_INITIAL_VELOCITY = 5;
+const int BIRD_ACCELARATION = 10;
 
 SDL_Rect birdSpriteClips[BIRD_ANIMATION_FRAMES];
 LTexture birdSpriteSheet;
 
-bool loadMedia()
+SDL_Rect baseSpriteClips[4];
+LTexture baseSpriteSheet;
+
+bool LoadBaseMedia()
 {
     bool success = true;
-    if (!birdSpriteSheet.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/yellowbird.png", gRenderer))
+    if (!baseSpriteSheet.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/base(Photo)(noise_scale)(Level3)(width 450).png", gRenderer))
     {
-        logSDLError(cout, "load from file");
+        logSDLError(std::cout, "load from file", true);
         success = false;
     }
     else
     {
-        birdSpriteClips[0].x = 0;
-        birdSpriteClips[0].y = 0;
-        birdSpriteClips[0].w = 55;
-        birdSpriteClips[0].h = 38;
+        baseSpriteClips[0].x = 0;
+        baseSpriteClips[0].y = 0;
+        baseSpriteClips[0].w = 450;
+        baseSpriteClips[0].h = 150;
 
-        birdSpriteClips[1].x = 55;
-        birdSpriteClips[1].y = 0;
-        birdSpriteClips[1].w = 55;
-        birdSpriteClips[1].h = 38;
+        baseSpriteClips[1].x = 8;
+        baseSpriteClips[1].y = 0;
+        baseSpriteClips[1].w = 450;
+        baseSpriteClips[1].h = 150;
 
-        birdSpriteClips[2].x = 110;
-        birdSpriteClips[2].y = 0;
-        birdSpriteClips[2].w = 55;
-        birdSpriteClips[2].h = 38;
+        baseSpriteClips[2].x = 16;
+        baseSpriteClips[2].y = 0;
+        baseSpriteClips[2].w = 450;
+        baseSpriteClips[2].h = 150;
+
+        baseSpriteClips[3].x = 24;
+        baseSpriteClips[3].y = 0;
+        baseSpriteClips[3].w = 450;
+        baseSpriteClips[3].h = 150;
     }
 
     return success;
@@ -53,35 +63,37 @@ bool loadMedia()
 
 int main(int argc, char* argv[])
 {
-    initSDL(gWindow, gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT,  WINDOW_TITLE);
+    initSDL(gWindow, gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE);
 
-    LTexture backgroundTexture;
+    /*LTexture backgroundTexture;
     if (!backgroundTexture.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/background-day(Photo)(noise_scale)(Level3)(width 450).png", gRenderer))
     {
         logSDLError(std::cout, "Load Background Texture", true);
-    }
-    
-    LTexture baseTexture;
-    if (!baseTexture.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/base(Photo)(noise_scale)(Level3)(width 450).png", gRenderer))
-    {
-        logSDLError(std::cout, "Load base texture", true);
-    }
+    }*/
 
-    LTexture PipeTexture;
+    //LTexture baseTexture;
+    //if (!baseTexture.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/base(Photo)(noise_scale)(Level3)(width 450).png", gRenderer))
+    //{
+    //    logSDLError(std::cout, "Load base texture", true);
+    //}
+
+    /*LTexture PipeTexture;
     if (!PipeTexture.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/pipe-green(Photo)(noise_scale)(Level3)(width 80).png", gRenderer))
     {
         logSDLError(std::cout, "Load pipe", true);
-    }
+    }*/
 
     SDL_Rect birdRect = { SCREEN_WIDTH / 4, SCREEN_HEIGHT / 7 * 3, birdSpriteSheet.getWidth() / 3, birdSpriteSheet.getHeight() };
 
-    if (!loadMedia())
+    if (!loadMedia() || !LoadBaseMedia())
     {
         logSDLError(std::cout, "Load media", true);
     }
     else
     {
         bool quit = false;
+
+        bool drop = false;
 
         SDL_Event e;
 
@@ -100,7 +112,10 @@ int main(int argc, char* argv[])
                     if (e.key.keysym.sym == SDLK_ESCAPE)
                         quit = true;
                     else if (e.key.keysym.sym == SDLK_UP)
+                    {
                         birdRect.y = (birdRect.y + SCREEN_HEIGHT - 10) % SCREEN_HEIGHT;
+                        drop = true;
+                    }
                 }
             }
             SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
@@ -108,18 +123,22 @@ int main(int argc, char* argv[])
 
             backgroundTexture.render(0, 0, gRenderer);
             PipeTexture.render(300, SCREEN_HEIGHT - 400, gRenderer);
-            baseTexture.render(0, SCREEN_HEIGHT - baseTexture.getHeight(), gRenderer);
+            /*baseTexture.render(0, SCREEN_HEIGHT - baseTexture.getHeight(), gRenderer);*/
 
-            SDL_Rect* currentClip = &birdSpriteClips[frame / 15];
+            SDL_Rect* currentBirdClip = &birdSpriteClips[frame / 10];
+            birdSpriteSheet.renderToTargetRect(gRenderer, &birdRect, currentBirdClip);
 
-            birdSpriteSheet.renderToTargetRect(gRenderer, &birdRect, currentClip);
+            SDL_Rect* currentBaseClip = &baseSpriteClips[frame / 10];
+            baseSpriteSheet.render(0, SCREEN_HEIGHT - baseSpriteSheet.getHeight(), gRenderer, currentBaseClip);
 
             SDL_RenderPresent(gRenderer);
 
             ++frame;
 
-            if (frame / 15 >= BIRD_ANIMATION_FRAMES)
+            if (frame / 10 >= BIRD_ANIMATION_FRAMES)
+            {
                 frame = 0;
+            }
         }
     }
 
