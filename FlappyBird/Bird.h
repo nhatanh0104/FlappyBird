@@ -11,16 +11,21 @@ using namespace std;
 class Bird
 {
 	private:
-		LTexture birdSpriteSheet;
+		SDL_Texture* birdSpriteSheet;
 		SDL_Rect birdSpriteClips[3];
+		SDL_Rect birdRect;
+		int frame1 = 0;
+		int frame2 = 0;
+		double birdJumpTime;
+		double bird_initial_location_y;
 	public:
 		bool loadMedia(SDL_Renderer* gRenderer);
 
-		void RenderBirdToLocation(SDL_Renderer* gRenderer, SDL_Rect* destination, SDL_Rect* birdSpriteClips);
+		void RenderBirdToLocation(SDL_Renderer* gRenderer);
 
-		void jump(SDL_Rect* birdRect);
+		void SetBirdInitialLocation(int _x, int _y);
 
-		LTexture getLTexture();
+		void jump(SDL_Event* e);
 };
 
 #endif // !BIRD__H_

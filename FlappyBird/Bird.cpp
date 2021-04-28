@@ -8,20 +8,28 @@
 using namespace std;
 
 const int BIRD_ANIMATION_FRAMES = 3;
-const int BIRD_INITIAL_VELOCITY = 5;
-const int BIRD_ACCELARATION = 10;
+const double BIRD_INITIAL_VELOCITY = 10;
+const double BIRD_ACCELARATION = 0.5;
 int frame = 0;
 
 bool Bird::loadMedia(SDL_Renderer* gRenderer)
 {
     bool success = true;
-    if (!birdSpriteSheet.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/yellowbird.png", gRenderer))
+
+    SDL_Surface* birdSurface = IMG_Load("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/yellowbird.png");
+
+    birdRect.w = birdSurface->w / 3;
+    birdRect.h = birdSurface->h;
+
+    if (birdSurface == NULL)
     {
-        logSDLError(std::cout, "load from file", true);
+        logSDLError(std::cout, "Failed to load from file", true);
         success = false;
     }
     else
     {
+        birdSpriteSheet = SDL_CreateTextureFromSurface(gRenderer, birdSurface);
+
         birdSpriteClips[0].x = 0;
         birdSpriteClips[0].y = 0;
         birdSpriteClips[0].w = 55;
@@ -38,21 +46,49 @@ bool Bird::loadMedia(SDL_Renderer* gRenderer)
         birdSpriteClips[2].h = 38;
     }
 
+    SDL_FreeSurface(birdSurface);
+
     return success;
 }
 
-void Bird::RenderBirdToLocation(SDL_Renderer* gRenderer, SDL_Rect* destination, SDL_Rect* birdSpriteClips)
+void Bird::RenderBirdToLocation(SDL_Renderer* gRenderer)
 {
-    SDL_Rect* currentClip = birdSpriteClips[frame / 10];
-    birdSpriteSheet.renderToTargetRect(gRenderer, destination, currentClip);
-}
+    SDL_Rect* currentClip = &birdSpriteClips[frame1 / 15];
 
-void Bird::jump(SDL_Rect* birdRect)
-{
+    birdRect.y = bird_initial_location_y - (BIRD_INITIAL_VELOCITY * birdJumpTime - 0.5 * (BIRD_ACCELARATION * birdJumpTime * birdJumpTime));
     
+    SDL_RenderCopy(gRenderer, birdSpriteSheet, currentClip, &birdRect);
+
+    frame1++;
+    frame2++;
+
+    if (frame1 / 15 >= BIRD_ANIMATION_FRAMES)
+    {
+        frame1 = 0;
+    }
+    if (frame2 / 2 == 1)
+    {
+        birdJumpTime++;
+        frame2 = 0;
+    }
 }
 
-LTexture Bird::getLTexture()
+void Bird::SetBirdInitialLocation(int _x, int _y)
 {
-    return birdSpriteSheet;
+    birdRect.x = _x;
+    birdRect.y = _y;
+
+    bird_initial_location_y = _y;
+}
+
+void Bird::jump(SDL_Event* e)
+{
+    if (e->type == SDL_KEYDOWN)
+    {
+        if (e->key.keysym.sym == SDLK_SPACE)
+        {
+            bird_initial_location_y = birdRect.y;
+            birdJumpTime = 0;
+        }
+    }
 }
