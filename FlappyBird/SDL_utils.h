@@ -1,5 +1,5 @@
-#ifndef SDL_UTILS__H
-#define SDL_UTILS__H
+#ifndef SDL_UTILS__H_
+#define SDL_UTILS__H_
 
 #include <iostream>
 #include <SDL.h>

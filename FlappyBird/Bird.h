@@ -14,8 +14,8 @@ class Bird
 		SDL_Texture* birdSpriteSheet;
 		SDL_Rect birdSpriteClips[3];
 		SDL_Rect birdRect;
-		int frame1 = 0;
-		int frame2 = 0;
+		int birdRenderFrame = 0;
+		int birdJumpFrame = 0;
 		double birdJumpTime;
 		bool birdJump = false;
 		double bird_initial_location_y;

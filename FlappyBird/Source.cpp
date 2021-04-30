@@ -5,6 +5,8 @@
 #include "SDL_utils.h"
 #include "LTexture.h"
 #include "Bird.h"
+#include "Base.h"
+#include "Pipe.h"
 
 using namespace std;
 
@@ -28,7 +30,19 @@ int main(int argc, char* argv[])
 
     Bird myFlappyBird;
     if (!myFlappyBird.loadMedia(gRenderer))
-        cout << "Unable to load from file/n";
+        cout << "Unable to load bird texture from file/n";
+
+    Base myBase;
+    if (!myBase.loadMedia(gRenderer))
+        cout << "Unable to load base texture from file/n";
+
+    Pipe myPipe;
+    if (!myPipe.loadMedia(gRenderer))
+        cout << "Unable to load pipe texture from file/n";
+    
+
+    LTexture backgroundTexture;
+    backgroundTexture.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/background-day(Photo)(noise_scale)(Level3)(width 450).png", gRenderer);
     
     myFlappyBird.SetBirdInitialLocation(100, 400);
     while (!quit)
@@ -43,9 +57,13 @@ int main(int argc, char* argv[])
 
         SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
 
-        myFlappyBird.jump(&e);
-
         SDL_RenderClear(gRenderer);
+
+        backgroundTexture.render(0, 0, gRenderer, NULL);
+
+        myPipe.renderPipe(gRenderer);
+
+        myBase.renderBase(gRenderer);
 
         myFlappyBird.RenderBirdToLocation(gRenderer);
 

@@ -2,7 +2,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include "SDL_utils.h"
-#include "LTexture.h"
 #include "Bird.h"
 
 using namespace std;
@@ -53,24 +52,24 @@ bool Bird::loadMedia(SDL_Renderer* gRenderer)
 
 void Bird::RenderBirdToLocation(SDL_Renderer* gRenderer)
 {
-    SDL_Rect* currentClip = &birdSpriteClips[frame1 / 12];
+    SDL_Rect* currentClip = &birdSpriteClips[birdRenderFrame / 12];
     if (birdJump == true)
 
         birdRect.y = bird_initial_location_y - (BIRD_INITIAL_VELOCITY * birdJumpTime - 0.5 * (BIRD_ACCELARATION * birdJumpTime * birdJumpTime));
     
     SDL_RenderCopyEx(gRenderer, birdSpriteSheet, currentClip, &birdRect, degree, NULL, SDL_FLIP_NONE);
 
-    frame1++;
-    frame2++;
+    birdRenderFrame++;
+    birdJumpFrame++;
 
-    if (frame1 / 12 >= BIRD_ANIMATION_FRAMES)
+    if (birdRenderFrame / 12 >= BIRD_ANIMATION_FRAMES)
     {
-        frame1 = 0;
+        birdRenderFrame = 0;
     }
-    if (frame2 / 2 == 1)
+    if (birdJumpFrame / 2 == 1)
     {
         birdJumpTime++;
-        frame2 = 0;
+        birdJumpFrame = 0;
         if (degree < 30 && birdJump == true) degree++;
     }
 }
