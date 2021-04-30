@@ -17,7 +17,9 @@ class Bird
 		int frame1 = 0;
 		int frame2 = 0;
 		double birdJumpTime;
+		bool birdJump = false;
 		double bird_initial_location_y;
+		double degree = 0;
 	public:
 		bool loadMedia(SDL_Renderer* gRenderer);
 

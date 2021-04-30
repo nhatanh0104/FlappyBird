@@ -39,6 +39,8 @@ int main(int argc, char* argv[])
             }
             myFlappyBird.jump(&e);
         }
+
+
         SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
 
         myFlappyBird.jump(&e);

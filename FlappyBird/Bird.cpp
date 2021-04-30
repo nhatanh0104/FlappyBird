@@ -53,16 +53,17 @@ bool Bird::loadMedia(SDL_Renderer* gRenderer)
 
 void Bird::RenderBirdToLocation(SDL_Renderer* gRenderer)
 {
-    SDL_Rect* currentClip = &birdSpriteClips[frame1 / 15];
+    SDL_Rect* currentClip = &birdSpriteClips[frame1 / 12];
+    if (birdJump == true)
 
-    birdRect.y = bird_initial_location_y - (BIRD_INITIAL_VELOCITY * birdJumpTime - 0.5 * (BIRD_ACCELARATION * birdJumpTime * birdJumpTime));
+        birdRect.y = bird_initial_location_y - (BIRD_INITIAL_VELOCITY * birdJumpTime - 0.5 * (BIRD_ACCELARATION * birdJumpTime * birdJumpTime));
     
-    SDL_RenderCopy(gRenderer, birdSpriteSheet, currentClip, &birdRect);
+    SDL_RenderCopyEx(gRenderer, birdSpriteSheet, currentClip, &birdRect, degree, NULL, SDL_FLIP_NONE);
 
     frame1++;
     frame2++;
 
-    if (frame1 / 15 >= BIRD_ANIMATION_FRAMES)
+    if (frame1 / 12 >= BIRD_ANIMATION_FRAMES)
     {
         frame1 = 0;
     }
@@ -70,6 +71,7 @@ void Bird::RenderBirdToLocation(SDL_Renderer* gRenderer)
     {
         birdJumpTime++;
         frame2 = 0;
+        if (degree < 30 && birdJump == true) degree++;
     }
 }
 
@@ -89,6 +91,8 @@ void Bird::jump(SDL_Event* e)
         {
             bird_initial_location_y = birdRect.y;
             birdJumpTime = 0;
+            degree = -30;
+            birdJump = true;
         }
     }
 }
