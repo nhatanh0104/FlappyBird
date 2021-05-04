@@ -7,7 +7,7 @@
 using namespace std;
 
 const int BIRD_ANIMATION_FRAMES = 3;
-const double BIRD_INITIAL_VELOCITY = 10;
+const double BIRD_INITIAL_VELOCITY = 9 ;
 const double BIRD_ACCELARATION = 0.5;
 int frame = 0;
 
@@ -94,4 +94,9 @@ void Bird::jump(SDL_Event* e)
             birdJump = true;
         }
     }
+}
+
+SDL_Rect* Bird::getBirdRect()
+{
+    return &birdRect;
 }

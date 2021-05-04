@@ -28,6 +28,8 @@ class Bird
 		void SetBirdInitialLocation(int _x, int _y);
 
 		void jump(SDL_Event* e);
+
+		SDL_Rect* getBirdRect();
 };
 
 #endif // !BIRD__H_

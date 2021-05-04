@@ -29,5 +29,16 @@ bool Pipe::loadMedia(SDL_Renderer* gRenderer)
 
 void Pipe::renderPipe(SDL_Renderer* gRenderer)
 {
-	SDL_RenderCopy(gRenderer, pipeTexture, NULL, &pipeRect);
+	SDL_RenderCopy(gRenderer, pipeTexture, NULL, &pipeRectBottom);
+
+	SDL_RenderCopyEx(gRenderer, pipeTexture, NULL, &pipeRectUpper, 180, NULL, SDL_FLIP_NONE);
+
+	pipeFrame++;
+
+	if (pipeFrame == 1)
+	{
+		pipeFrame = 0;
+		pipeRectBottom.x--;
+		pipeRectUpper.x--;
+	}
 }

@@ -12,7 +12,9 @@ class Pipe
 {
 private:
 	SDL_Texture* pipeTexture;
-	SDL_Rect pipeRect = { 300, 400, 80, 450 };
+	SDL_Rect pipeRectUpper = { 300, 400 - 450 - 180, 80, 450 };
+	SDL_Rect pipeRectBottom = { 300, 400, 80, 450 };
+	int pipeFrame = 0;
 public:
 	bool loadMedia(SDL_Renderer* gRenderer);
 

@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
     LTexture backgroundTexture;
     backgroundTexture.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/background-day(Photo)(noise_scale)(Level3)(width 450).png", gRenderer);
     
-    myFlappyBird.SetBirdInitialLocation(100, 400);
+    myFlappyBird.SetBirdInitialLocation(100, 350);
     while (!quit)
     {
         while (SDL_PollEvent(&e) != 0) {
