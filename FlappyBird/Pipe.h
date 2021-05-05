@@ -5,6 +5,7 @@
 #include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <vector>
 
 using namespace std;
 
@@ -12,13 +13,15 @@ class Pipe
 {
 private:
 	SDL_Texture* pipeTexture;
-	SDL_Rect pipeRectUpper = { 300, 400 - 450 - 180, 80, 450 };
-	SDL_Rect pipeRectBottom = { 300, 400, 80, 450 };
+	SDL_Rect pipeRectUpper = {450, 0, 80, 450};
+	SDL_Rect pipeRectBottom = {450, 0, 80, 450};
 	int pipeFrame = 0;
 public:
 	bool loadMedia(SDL_Renderer* gRenderer);
 
 	void renderPipe(SDL_Renderer* gRenderer);
+
+	Pipe(SDL_Renderer* gRenderer);
 };
 
 #endif // !PIPE__H_

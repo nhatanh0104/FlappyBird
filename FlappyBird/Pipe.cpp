@@ -42,3 +42,10 @@ void Pipe::renderPipe(SDL_Renderer* gRenderer)
 		pipeRectUpper.x--;
 	}
 }
+
+Pipe::Pipe(SDL_Renderer* gRenderer)
+{
+	pipeRectBottom.y = rand() % 150 + 350;
+	pipeRectUpper.y = pipeRectBottom.y - 180 - 450;
+	this->loadMedia(gRenderer);
+}
