@@ -10,6 +10,9 @@ bool Pipe::loadMedia(SDL_Renderer* gRenderer)
 {
 	bool success = true;
 
+	pipeRectBottom.y = rand() % 150 + 350;
+	pipeRectUpper.y = pipeRectBottom.y - 180 - 450;
+
 	SDL_Surface* pipeSurface = IMG_Load("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/pipe-green(Photo)(noise_scale)(Level3)(width 80).png");
 	
 	if (pipeSurface == NULL)
@@ -48,4 +51,20 @@ Pipe::Pipe(SDL_Renderer* gRenderer)
 	pipeRectBottom.y = rand() % 150 + 350;
 	pipeRectUpper.y = pipeRectBottom.y - 180 - 450;
 	this->loadMedia(gRenderer);
+}
+
+SDL_Rect* Pipe::getPipeRect()
+{
+	return &pipeRectUpper;
+}
+
+int Pipe::getPipePosition()
+{
+	return pipeRectBottom.x;
+}
+
+void Pipe::setPipePosition(int pipePositionXAxis)
+{
+	pipeRectBottom.x = pipePositionXAxis;
+	pipeRectUpper.x = pipePositionXAxis;
 }

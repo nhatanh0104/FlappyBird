@@ -13,8 +13,8 @@ class Pipe
 {
 private:
 	SDL_Texture* pipeTexture;
-	SDL_Rect pipeRectUpper = {450, 0, 80, 450};
-	SDL_Rect pipeRectBottom = {450, 0, 80, 450};
+	SDL_Rect pipeRectUpper = {480, 0, 80, 450};
+	SDL_Rect pipeRectBottom = {480, 0, 80, 450};
 	int pipeFrame = 0;
 public:
 	bool loadMedia(SDL_Renderer* gRenderer);
@@ -22,6 +22,14 @@ public:
 	void renderPipe(SDL_Renderer* gRenderer);
 
 	Pipe(SDL_Renderer* gRenderer);
+
+	Pipe() {};
+
+	SDL_Rect* getPipeRect();
+
+	int getPipePosition();
+
+	void setPipePosition(int pipePositionXAxis);
 };
 
 #endif // !PIPE__H_

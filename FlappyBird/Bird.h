@@ -30,6 +30,8 @@ class Bird
 		void jump(SDL_Event* e);
 
 		SDL_Rect* getBirdRect();
+
+		bool getBirdJumpBoolValue();
 };
 
 #endif // !BIRD__H_

@@ -100,3 +100,8 @@ SDL_Rect* Bird::getBirdRect()
 {
     return &birdRect;
 }
+
+bool Bird::getBirdJumpBoolValue()
+{
+    return birdJump;
+}

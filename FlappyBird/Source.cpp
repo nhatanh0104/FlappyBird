@@ -29,6 +29,8 @@ int main(int argc, char* argv[])
 
     int frame = 0;
 
+    int index_of_pipe = 0;
+
     SDL_Event e;
     bool quit = false;
 
@@ -41,6 +43,12 @@ int main(int argc, char* argv[])
         cout << "Unable to load base texture from file/n";
 
     vector<Pipe> pipeVector;
+
+    Pipe PipeArray[NUMBER_OF_PIPES];
+    for (int i = 0; i < NUMBER_OF_PIPES; i++)
+    {
+        PipeArray[i].loadMedia(gRenderer);
+    }
 
     LTexture backgroundTexture;
     backgroundTexture.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/background-day(Photo)(noise_scale)(Level3)(width 450).png", gRenderer);
@@ -62,16 +70,23 @@ int main(int argc, char* argv[])
 
         backgroundTexture.render(0, 0, gRenderer, NULL);
 
-        if (frame >= 250)
+        if (frame >= 250 && myFlappyBird.getBirdJumpBoolValue() == true)
         {
-            Pipe* newPipe = new Pipe(gRenderer);
-            pipeVector.push_back(*newPipe);
+            if(PipeArray[index_of_pipe].getPipePosition() == 480)
+                pipeVector.push_back(PipeArray[index_of_pipe]);
+            index_of_pipe++;
+            if (index_of_pipe == 4) index_of_pipe = 0;
             frame = 0;
         }
         
         for (int i = 0; i < pipeVector.size(); i++)
         {
             pipeVector[i].renderPipe(gRenderer);
+            if (pipeVector[i].getPipePosition() < -350)
+            {
+                pipeVector[i].setPipePosition(480);
+                pipeVector.erase(pipeVector.begin() + i);
+            }
         }
 
         myBase.renderBase(gRenderer);
