@@ -23,6 +23,49 @@ const int BIRD_INITIAL_VELOCITY = 5;
 const int BIRD_ACCELARATION = 10;
 const int NUMBER_OF_PIPES = 4;
 
+bool CheckCollision(SDL_Rect a, SDL_Rect b)
+{
+    int leftA, leftB;
+    int rightA, rightB;
+    int topA, topB;
+    int bottomA, bottomB;
+
+    //Calculate the sides of rect A
+    leftA = a.x;
+    rightA = a.x + a.w;
+    topA = a.y;
+    bottomA = a.y + a.h;
+
+    //Calculate the sides of rect B
+    leftB = b.x;
+    rightB = b.x + b.w;
+    topB = b.y;
+    bottomB = b.y + b.h;
+    //If any of the sides from A are outside of B
+    if (bottomA <= topB)
+    {
+        return false;
+    }
+
+    if (topA >= bottomB)
+    {
+        return false;
+    }
+
+    if (rightA <= leftB)
+    {
+        return false;
+    }
+
+    if (leftA >= rightB)
+    {
+        return false;
+    }
+
+    //If none of the sides from A are outside B
+    return true;
+}
+
 int main(int argc, char* argv[])
 {
     initSDL(gWindow, gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE);
@@ -86,6 +129,12 @@ int main(int argc, char* argv[])
             {
                 pipeVector[i].setPipePosition(480);
                 pipeVector.erase(pipeVector.begin() + i);
+            }
+
+            if (CheckCollision(myFlappyBird.getBirdRect(), pipeVector[i].getPipeRectUpper()) ||
+                CheckCollision(myFlappyBird.getBirdRect(), pipeVector[i].getPipeRectBottom()))
+            {
+                quitSDL(gWindow, gRenderer);
             }
         }
 

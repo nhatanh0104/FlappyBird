@@ -53,9 +53,14 @@ Pipe::Pipe(SDL_Renderer* gRenderer)
 	this->loadMedia(gRenderer);
 }
 
-SDL_Rect* Pipe::getPipeRect()
+SDL_Rect Pipe::getPipeRectUpper()
 {
-	return &pipeRectUpper;
+	return pipeRectUpper;
+}
+
+SDL_Rect Pipe::getPipeRectBottom()
+{
+	return pipeRectBottom;
 }
 
 int Pipe::getPipePosition()

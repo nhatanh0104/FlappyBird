@@ -96,9 +96,9 @@ void Bird::jump(SDL_Event* e)
     }
 }
 
-SDL_Rect* Bird::getBirdRect()
+SDL_Rect Bird::getBirdRect()
 {
-    return &birdRect;
+    return birdRect;
 }
 
 bool Bird::getBirdJumpBoolValue()

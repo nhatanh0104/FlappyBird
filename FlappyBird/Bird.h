@@ -29,7 +29,7 @@ class Bird
 
 		void jump(SDL_Event* e);
 
-		SDL_Rect* getBirdRect();
+		SDL_Rect getBirdRect();
 
 		bool getBirdJumpBoolValue();
 };

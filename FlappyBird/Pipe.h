@@ -25,7 +25,9 @@ public:
 
 	Pipe() {};
 
-	SDL_Rect* getPipeRect();
+	SDL_Rect getPipeRectUpper();
+
+	SDL_Rect getPipeRectBottom();
 
 	int getPipePosition();
 
