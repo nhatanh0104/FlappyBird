@@ -7,9 +7,8 @@
 using namespace std;
 
 const int BIRD_ANIMATION_FRAMES = 3;
-const double BIRD_INITIAL_VELOCITY = 9 ;
+const double BIRD_INITIAL_VELOCITY = 9.5 ;
 const double BIRD_ACCELARATION = 0.5;
-int frame = 0;
 
 bool Bird::loadMedia(SDL_Renderer* gRenderer)
 {

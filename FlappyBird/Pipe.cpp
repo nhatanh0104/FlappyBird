@@ -68,8 +68,10 @@ int Pipe::getPipePosition()
 	return pipeRectBottom.x;
 }
 
-void Pipe::setPipePosition(int pipePositionXAxis)
+void Pipe::setPipePosition(int pipeInitialPositionXAxis)
 {
-	pipeRectBottom.x = pipePositionXAxis;
-	pipeRectUpper.x = pipePositionXAxis;
+	pipeRectBottom.x = pipeInitialPositionXAxis;
+	pipeRectUpper.x = pipeInitialPositionXAxis;
+	pipeRectBottom.y = rand() % 150 + 350;
+	pipeRectUpper.y = pipeRectBottom.y - 180 - 450;
 }

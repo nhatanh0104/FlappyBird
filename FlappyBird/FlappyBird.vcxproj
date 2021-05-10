@@ -78,8 +78,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\SDL2-2.0.14\include;C:\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDL2-2.0.14\lib\x64;C:\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\SDL2-2.0.14\include;C:\SDL2_image-2.0.5\include;C:\SDL2_ttf-2.0.15\include;C:\SDL2_mixer-2.0.4\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\SDL2-2.0.14\lib\x64;C:\SDL2_image-2.0.5\lib\x64;C:\SDL2_mixer-2.0.4\lib\x64;C:\SDL2_ttf-2.0.15\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -122,7 +122,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -144,6 +144,8 @@
   <ItemGroup>
     <ClCompile Include="Base.cpp" />
     <ClCompile Include="Bird.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="SDL_utils.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -152,6 +154,8 @@
   <ItemGroup>
     <ClInclude Include="Base.h" />
     <ClInclude Include="Bird.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameEngine.h" />
     <ClInclude Include="LTexture.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="SDL_utils.h" />
