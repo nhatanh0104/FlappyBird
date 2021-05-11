@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClCompile Include="Base.cpp" />
     <ClCompile Include="Bird.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="Pipe.cpp" />
@@ -154,6 +155,7 @@
   <ItemGroup>
     <ClInclude Include="Base.h" />
     <ClInclude Include="Bird.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="LTexture.h" />

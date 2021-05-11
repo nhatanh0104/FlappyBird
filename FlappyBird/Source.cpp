@@ -116,7 +116,7 @@ int main(int argc, char* argv[])
     //    frame++;
     //}
 
-        srand(time(0));
+    srand(time(0));
 
     initSDL(gWindow, gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE);
 

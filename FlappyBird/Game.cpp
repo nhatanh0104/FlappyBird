@@ -19,9 +19,13 @@ Base myBase;
 Pipe PipeArray[4];
 vector<Pipe> pipeVector;
 LTexture backgroundTexture;
+LTexture gameTitle;
 LTexture readyMessage;
 
+Button playButton;
+
 bool collision = false;
+bool buttonPress = false;
 
 SDL_Event e;
 
@@ -52,6 +56,9 @@ bool GAME_LOAD(SDL_Renderer* gRenderer)
 
     backgroundTexture.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/background-day(Photo)(noise_scale)(Level3)(width 450).png", gRenderer);
     readyMessage.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/ready-message.png", gRenderer);
+    gameTitle.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/game-title.png", gRenderer);
+
+    playButton.loadButton(gRenderer, "D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/play-button.png");
 
     return success;
 }
@@ -82,6 +89,8 @@ bool CheckGameCollision()
 void handleEvent(SDL_Event e)
 {
     myFlappyBird.jump(&e);
+    if (playButton.isPressed(&e))
+        buttonPress = true;
 }
 
 bool GetGameStatus()
@@ -119,11 +128,18 @@ void renderGame(SDL_Renderer* gRenderer)
 
     myBase.renderBase(gRenderer);
 
-    myFlappyBird.RenderBirdToLocation(gRenderer);
+    if (buttonPress == false)
+    {
+        gameTitle.render(50, 150, gRenderer, NULL);
+        playButton.renderButton(150, 600, gRenderer);
+    }
+    if (buttonPress == true)
+    {
+        myFlappyBird.RenderBirdToLocation(gRenderer);
 
-    if (!myFlappyBird.getBirdJumpBoolValue())
-        readyMessage.render(125, 250, gRenderer, NULL);
-
+        if (!myFlappyBird.getBirdJumpBoolValue())
+            readyMessage.render(125, 250, gRenderer, NULL);
+    }
     SDL_RenderPresent(gRenderer);
 
     frame++;

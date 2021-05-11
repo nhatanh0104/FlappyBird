@@ -18,6 +18,7 @@
 #include "Bird.h"
 #include "Base.h"
 #include "Pipe.h"
+#include "Button.h"
 
 bool GAME_LOAD(SDL_Renderer* gRenderer);
 
