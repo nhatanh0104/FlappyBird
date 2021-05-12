@@ -20,6 +20,7 @@ public:
 	
 	void renderBase(SDL_Renderer* gRenderer);
 
+	SDL_Rect getBaseRect();
 };
 
 #endif // !BASE__H_

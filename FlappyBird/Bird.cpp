@@ -79,6 +79,9 @@ void Bird::SetBirdInitialLocation(int _x, int _y)
     birdRect.y = _y;
 
     bird_initial_location_y = _y;
+
+    birdJump = false;
+    degree = 0;
 }
 
 void Bird::jump(SDL_Event* e)

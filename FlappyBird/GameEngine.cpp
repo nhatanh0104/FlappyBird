@@ -43,3 +43,17 @@ bool CheckRectCollision(SDL_Rect a, SDL_Rect b)
 
     return true;
 }
+
+char* intToChar(int N)
+{
+    char toChar[2];
+    int i = 1;
+    while (N != 0)
+    {
+        int push = N % 10;
+        N = N / 10;
+        toChar[i] = (char)(push + '0');
+        i++;
+    }
+    return toChar;
+}

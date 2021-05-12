@@ -13,6 +13,7 @@ class Button
 private:
 	SDL_Texture* ButtonTexture;
 	SDL_Rect buttonRect;
+	bool isPressed = false;
 
 public:
 	bool loadButton(SDL_Renderer* gRenderer, string path);
@@ -21,7 +22,9 @@ public:
 
 	bool isMouseInside();
 
-	bool isPressed(SDL_Event* e);
+	void handleEvent(SDL_Event* e);
+
+	bool isButtonPressed();
 };
 
 #endif // !BUTTON_H__

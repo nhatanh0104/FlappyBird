@@ -60,3 +60,7 @@ void Base::renderBase(SDL_Renderer* gRenderer)
     if (baseFrame / 5 >= BASE_ANIMATION_FRAMES) baseFrame = 0;
 }
 
+SDL_Rect Base::getBaseRect()
+{
+    return baseRect;
+}

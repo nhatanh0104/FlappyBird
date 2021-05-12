@@ -51,15 +51,20 @@ bool Button::isMouseInside()
 	return inside;
 }
 
-bool Button::isPressed(SDL_Event *e)
+void Button::handleEvent(SDL_Event *e)
 {
-	bool press = false;
-
 	if (this->isMouseInside())
 	{
 		if (e->type == SDL_MOUSEBUTTONDOWN)
-			press = true;
+			isPressed = true;
 	}
+	else
+	{
+		isPressed = false;
+	}
+}
 
-	return press;
+bool Button::isButtonPressed()
+{
+	return isPressed;
 }

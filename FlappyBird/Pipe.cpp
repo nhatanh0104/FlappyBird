@@ -6,6 +6,11 @@
 
 using namespace std;
 
+Pipe::Pipe()
+{
+	pipeTexture = NULL;
+}
+
 bool Pipe::loadMedia(SDL_Renderer* gRenderer)
 {
 	bool success = true;
@@ -44,13 +49,6 @@ void Pipe::renderPipe(SDL_Renderer* gRenderer)
 		pipeRectBottom.x--;
 		pipeRectUpper.x--;
 	}
-}
-
-Pipe::Pipe(SDL_Renderer* gRenderer)
-{
-	pipeRectBottom.y = rand() % 150 + 350;
-	pipeRectUpper.y = pipeRectBottom.y - 180 - 450;
-	this->loadMedia(gRenderer);
 }
 
 SDL_Rect Pipe::getPipeRectUpper()

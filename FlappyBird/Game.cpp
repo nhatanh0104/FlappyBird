@@ -1,3 +1,4 @@
+#include <SDL_ttf.h>
 #include "Game.h"
 #include "SDL_utils.h"
 #include "GameEngine.h"
@@ -5,6 +6,7 @@
 #include "Bird.h"
 #include "Base.h"
 #include "Pipe.h"
+#include "GameStateEnum.h"
 
 const int BIRD_ANIMATION_FRAMES = 3;
 const int PIPE_GAP = 150;
@@ -14,18 +16,22 @@ const int NUMBER_OF_PIPES = 4;
 
 bool quit = false;
 
+TTF_Font* FlappyBirdy;
+
 Bird myFlappyBird;
 Base myBase;
 Pipe PipeArray[4];
 vector<Pipe> pipeVector;
 LTexture backgroundTexture;
-LTexture gameTitle;
 LTexture readyMessage;
+SDL_Rect HighScoreRect = { 350, 400, 25, 25 };
 
-Button playButton;
+LTexture gameOver;
+LTexture scoreBoard;
+Button playAgainButton;
+Button quitButton;
 
 bool collision = false;
-bool buttonPress = false;
 
 SDL_Event e;
 
@@ -36,6 +42,8 @@ int score = 0;
 bool GAME_LOAD(SDL_Renderer* gRenderer)
 {
     bool success = true;
+
+    FlappyBirdy = TTF_OpenFont("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/fonts/flappy-bird-font.ttf", 20);
 
     if (!myFlappyBird.loadMedia(gRenderer))
     {
@@ -54,13 +62,30 @@ bool GAME_LOAD(SDL_Renderer* gRenderer)
         PipeArray[i].loadMedia(gRenderer);
     }
 
-    backgroundTexture.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/background-day(Photo)(noise_scale)(Level3)(width 450).png", gRenderer);
+    if (!scoreBoard.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/score-board.png", gRenderer))
+    {
+        cout << "Failed to load score board\n";
+        return false;
+    }
+
+    backgroundTexture.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/background-day.png", gRenderer);
     readyMessage.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/ready-message.png", gRenderer);
-    gameTitle.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/game-title.png", gRenderer);
 
-    playButton.loadButton(gRenderer, "D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/play-button.png");
-
+    gameOver.loadFromFile("D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/game-over.png", gRenderer);
+    playAgainButton.loadButton(gRenderer, "D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/play-button.png");
+    quitButton.loadButton(gRenderer, "D:/FirstYear/Code/GameProjectAssignment/FlappyBirdGame/FlappyBird/FlappyBirdAssets/sprites/exit-button.png");
     return success;
+}
+
+void renderScore(SDL_Renderer* gRenderer)
+{
+    SDL_Surface* scoreSurface = TTF_RenderText_Solid(FlappyBirdy, intToChar(score), { 0, 0, 0, 0 });
+
+    SDL_Texture* score = SDL_CreateTextureFromSurface(gRenderer, scoreSurface);
+
+    SDL_RenderCopy(gRenderer, score, NULL, &HighScoreRect);
+
+    SDL_RenderPresent;
 }
 
 void SetInitialLocation()
@@ -72,7 +97,7 @@ void SetInitialLocation()
     }
 }
 
-bool CheckGameCollision()
+int CheckGameCollision()
 {
     for (int i = 0; i < pipeVector.size(); i++)
     {
@@ -83,24 +108,22 @@ bool CheckGameCollision()
         }
     }
 
-    return collision;
+    if (CheckRectCollision(myFlappyBird.getBirdRect(), myBase.getBaseRect()))
+        collision = true;
+    
+    if (collision == true) return GAME_OVER;
+    else return PLAY;
 }
 
-void handleEvent(SDL_Event e)
+void gameHandleEvent(SDL_Event e)
 {
     myFlappyBird.jump(&e);
-    if (playButton.isPressed(&e))
-        buttonPress = true;
-}
-
-bool GetGameStatus()
-{
-    return quit;
+    playAgainButton.handleEvent(&e);
+    quitButton.handleEvent(&e);
 }
 
 void renderGame(SDL_Renderer* gRenderer)
 {
-
     SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
 
     SDL_RenderClear(gRenderer);
@@ -115,6 +138,9 @@ void renderGame(SDL_Renderer* gRenderer)
             pipeVector[i].setPipePosition(480);
             pipeVector.erase(pipeVector.begin() + i);
         }
+
+        if (pipeVector[i].getPipeRectBottom().x + pipeVector[i].getPipeRectBottom().w == myFlappyBird.getBirdRect().x)
+            score++;
     }
 
     if (frame >= 250 && myFlappyBird.getBirdJumpBoolValue() == true)
@@ -125,22 +151,53 @@ void renderGame(SDL_Renderer* gRenderer)
         if (index_of_pipe == 4) index_of_pipe = 0;
         frame = 0;
     }
+    
+    myFlappyBird.RenderBirdToLocation(gRenderer);
+
+    if (!myFlappyBird.getBirdJumpBoolValue())
+        readyMessage.render(125, 250, gRenderer, NULL);
 
     myBase.renderBase(gRenderer);
 
-    if (buttonPress == false)
-    {
-        gameTitle.render(50, 150, gRenderer, NULL);
-        playButton.renderButton(150, 600, gRenderer);
-    }
-    if (buttonPress == true)
-    {
-        myFlappyBird.RenderBirdToLocation(gRenderer);
-
-        if (!myFlappyBird.getBirdJumpBoolValue())
-            readyMessage.render(125, 250, gRenderer, NULL);
-    }
     SDL_RenderPresent(gRenderer);
 
     frame++;
+}
+
+void renderScoreBoard(SDL_Renderer* gRenderer)
+{
+    gameOver.render(50, 100, gRenderer, NULL);
+
+    scoreBoard.render(50, 300, gRenderer, NULL);
+    playAgainButton.renderButton(50, 500, gRenderer);
+    quitButton.renderButton(250, 500, gRenderer);
+
+    SDL_RenderPresent(gRenderer);
+}
+
+void Reset()
+{
+    pipeVector.clear();
+    for (int i = 0; i < NUMBER_OF_PIPES; i++)
+    {
+        PipeArray[i].setPipePosition(480);
+    }
+
+    frame = 0;
+    index_of_pipe = 0;
+    score = 0;
+    
+    myFlappyBird.SetBirdInitialLocation(80, 350);
+    
+    collision = false;
+}
+
+bool playAgain()
+{
+    return playAgainButton.isButtonPressed();
+}
+
+bool quitGame()
+{
+    return quitButton.isButtonPressed();
 }

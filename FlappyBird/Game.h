@@ -19,17 +19,24 @@
 #include "Base.h"
 #include "Pipe.h"
 #include "Button.h"
+#include "GameStateEnum.h"
 
 bool GAME_LOAD(SDL_Renderer* gRenderer);
 
 void SetInitialLocation();
 
-bool CheckGameCollision();
+int CheckGameCollision();
 
-void handleEvent(SDL_Event e);
-
-bool GetGameStatus();
+void gameHandleEvent(SDL_Event e);
 
 void renderGame(SDL_Renderer* gRenderer);
+
+void renderScoreBoard(SDL_Renderer* gRenderer);
+
+void Reset();
+
+bool playAgain();
+
+bool quitGame();
 
 #endif // !GAME__H_
